@@ -17,12 +17,17 @@ export class AvailablePlacesComponent implements OnInit {
   places = signal<Place[] | undefined>(undefined);
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
+  isFetchingData = signal<boolean>(false);
   ngOnInit(): void {
+      this.isFetchingData.set(true);
       const subscription = this.httpClient.get<any>('http://localhost:3000/places').pipe(
         map((resData) =>  resData.places)
       ).subscribe({
         next: (places) =>{
           this.places.set(places);
+        },
+        complete: () => {
+          this.isFetchingData.set(false);
         }
       });
 
