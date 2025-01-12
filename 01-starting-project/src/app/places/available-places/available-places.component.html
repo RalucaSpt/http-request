@@ -1,6 +1,10 @@
 <app-places-container title="Available Places">
-  @if(isFetchingData()) {
+  @if(isFetchingData() && !error()) {
   <p class="fallback-text">Fetching available places...</p>
+  }
+
+  @if(error()) {
+  <p class="fallback-text">{{ error() }}</p>
   }
 
   @if (places()) {
